@@ -33,4 +33,16 @@ public class PowTest {
     void testPowHandlesOneBase() {
         assertEquals(1, Pow.pow(1, 100));
     }
+
+    @ParameterizedTest
+    @CsvSource({"2, 62, 4611686018427387904", "-2, 63, -9223372036854775808", "-3, 3, -27", "-2, 4, 16", "10, 18, 1000000000000000000"})
+    void testPowAtAndNearLongBounds(int base, int exponent, long expected) {
+        assertEquals(expected, Pow.pow(base, exponent));
+    }
+
+    @ParameterizedTest
+    @CsvSource({"2, 63", "2, 64", "-2, 64", "10, 19", "2147483647, 3"})
+    void testPowThrowsOnOverflow(int base, int exponent) {
+        assertThrows(ArithmeticException.class, () -> Pow.pow(base, exponent));
+    }
 }

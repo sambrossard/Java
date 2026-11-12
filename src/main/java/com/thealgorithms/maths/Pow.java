@@ -16,12 +16,15 @@ public final class Pow {
      * <p>
      * The method calculates {@code a}<sup>{@code b}</sup> by iteratively multiplying the base {@code a} with itself {@code b} times.
      * If the exponent {@code b} is negative, an {@code IllegalArgumentException} is thrown.
+     * If the exact result does not fit in a {@code long}, an {@code ArithmeticException} is thrown
+     * instead of silently returning a wrapped-around value.
      * </p>
      *
-     * @param a the base of the exponentiation. Must be a non-negative integer.
+     * @param a the base of the exponentiation.
      * @param b the exponent to which the base {@code a} is raised. Must be a non-negative integer.
      * @return the result of {@code a}<sup>{@code b}</sup> as a {@code long}.
      * @throws IllegalArgumentException if {@code b} is negative.
+     * @throws ArithmeticException if the result overflows a {@code long}.
      */
     public static long pow(int a, int b) {
         if (b < 0) {
@@ -29,7 +32,7 @@ public final class Pow {
         }
         long result = 1;
         for (int i = 1; i <= b; i++) {
-            result *= a;
+            result = Math.multiplyExact(result, a);
         }
         return result;
     }
